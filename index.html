@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f766e">
+
+  <title>أذكاري اليومية</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Tahoma, sans-serif;
+      background: #f4f8f7;
+      color: #173b3a;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f766e, #155e75);
+      color: white;
+      text-align: center;
+      padding: 35px 15px 30px;
+      border-radius: 0 0 30px 30px;
+    }
+
+    header .moon {
+      font-size: 45px;
+    }
+
+    header h1 {
+      margin: 8px 0;
+      font-size: 30px;
+    }
+
+    header p {
+      margin: 8px 0 0;
+      font-size: 16px;
+    }
+
+    .container {
+      max-width: 650px;
+      margin: auto;
+      padding: 20px 15px 90px;
+    }
+
+    .quote {
+      background: white;
+      border-radius: 20px;
+      padding: 18px;
+      text-align: center;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,.06);
+      font-size: 18px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .card {
+      border: none;
+      background: white;
+      border-radius: 20px;
+      padding: 22px 10px;
+      font-size: 17px;
+      color: #173b3a;
+      box-shadow: 0 4px 15px rgba(0,0,0,.06);
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .card:active {
+      transform: scale(.97);
+    }
+
+    .icon {
+      display: block;
+      font-size: 35px;
+      margin-bottom: 10px;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .back {
+      border: none;
+      background: #0f766e;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 14px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 15px;
+    }
+
+    .section-title {
+      text-align: center;
+      margin: 10px 0 20px;
+    }
+
+    .dhikr {
+      background: white;
+      border-radius: 22px;
+      padding: 25px 18px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 15px rgba(0,0,0,.07);
+      text-align: center;
+    }
+
+    .dhikr-text {
+      font-size: 23px;
+      line-height: 2;
+      margin-bottom: 18px;
+    }
+
+    .count {
+      color: #0f766e;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .done {
+      background: #0f766e;
+      border: none;
+      color: white;
+      padding: 13px 35px;
+      border-radius: 15px;
+      font-size: 17px;
+      cursor: pointer;
+    }
+
+    .favorite {
+      background: transparent;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      margin-right: 8px;
+    }
+
+    .progress {
+      height: 9px;
+      background: #dbe8e6;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: #0f766e;
+      transition: .3s;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 5px;
+      box-shadow: 0 -3px 15px rgba(0,0,0,.08);
+    }
+
+    footer button {
+      border: none;
+      background: none;
+      color: #355957;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    footer span {
+      display: block;
+      font-size: 23px;
+      margin-bottom: 3px;
+    }
+
+    .dark {
+      background: #102524;
+      color: #e6f5f3;
+    }
+
+    .dark .card,
+    .dark .quote,
+    .dark .dhikr,
+    .dark footer {
+      background: #183533;
+      color: #e6f5f3;
+    }
+
+    .dark .card {
+      color: #e6f5f3;
+    }
+
+    .dark .progress {
+      background: #31504d;
+    }
+
+    .settings {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,.06);
+    }
+
+    .settings button {
+      width: 100%;
+      padding: 15px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 14px;
+      background: #e5f1ef;
+      color: #173b3a;
+      font-size: 16px;
+    }
+
+    @media (max-width: 400px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .dhikr-text {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="moon">🌙</div>
+  <h1>أذكاري اليومية</h1>
+  <p>واذكر ربك إذا نسيت</p>
+</header>
+
+<div class="container">
+
+  <!-- الصفحة الرئيسية -->
+  <div id="home" class="section active">
+
+    <div class="quote">
+      🤍 <br>
+      <strong>ألا بذكر الله تطمئن القلوب</strong>
+    </div>
+
+    <div class="grid">
+
+      <button class="card" onclick="openCategory('morning')">
+        <span class="icon">🌅</span>
+        أذكار الصباح
+      </button>
+
+      <button class="card" onclick="openCategory('evening')">
+        <span class="icon">🌇</span>
+        أذكار المساء
+      </button>
+
+      <button class="card" onclick="openCategory('sleep')">
+        <span class="icon">🌙</span>
+        أذكار النوم
+      </button>
+
+      <button class="card" onclick="openCategory('prayer')">
+        <span class="icon">🕌</span>
+        أذكار بعد الصلاة
+      </button>
+
+      <button class="card" onclick="openCategory('wake')">
+        <span class="icon">☀️</span>
+        أذكار الاستيقاظ
+      </button>
+
+      <button class="card" onclick="openCategory('misc')">
+        <span class="icon">🤲</span>
+        أذكار متنوعة
+      </button>
+
+    </div>
+  </div>
+
+
+  <!-- صفحة الأذكار -->
+  <div id="dhikrPage" class="section">
+
+    <button class="back" onclick="goHome()">← العودة</button>
+
+    <h2 id="sectionTitle" class="section-title"></h2>
+
+    <div class="progress">
+      <div id="progressBar" class="progress-bar"></div>
+    </div>
+
+    <div id="dhikrContainer"></div>
+
+  </div>
+
+
+  <!-- المفضلة -->
+  <div id="favorites" class="section">
+
+    <h2 class="section-title">❤️ أذكاري المفضلة</h2>
+
+    <div id="favoriteContainer"></div>
+
+  </div>
+
+
+  <!-- الإعدادات -->
+  <div id="settings" class="section">
+
+    <h2 class="section-title">⚙️ الإعدادات</h2>
+
+    <div class="settings">
+
+      <button onclick="toggleDarkMode()">
+        🌙 تشغيل / إيقاف الوضع الليلي
+      </button>
+
+      <button onclick="alert('سيتم إضافة التذكيرات في النسخة القادمة بإذن الله 🌷')">
+        🔔 التذكيرات
+      </button>
+
+      <button onclick="alert('أذكاري اليومية - تطبيق مجاني للأذكار اليومية 🤍')">
+        ℹ️ حول التطبيق
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- شريط أسفل التطبيق -->
+<footer>
+
+  <button onclick="goHome()">
+    <span>🏠</span>
+    الرئيسية
+  </button>
+
+  <button onclick="showFavorites()">
+    <span>❤️</span>
+    المفضلة
+  </button>
+
+  <button onclick="showSettings()">
+    <span>⚙️</span>
+    الإعدادات
+  </button>
+
+</footer>
+
+
+<script>
+
+const adhkar = {
+
+  morning: {
+    title: "🌅 أذكار الصباح",
+    items: [
+      {
+        text: "أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ",
+        count: 1
+      },
+      {
+        text: "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ...",
+        count: 1
+      },
+      {
+        text: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ",
+        count: 100
+      }
+    ]
+  },
+
+  evening: {
+    title: "🌇 أذكار المساء",
+    items: [
+      {
+        text: "أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ",
+        count: 1
+      },
+      {
+        text: "قُلْ هُوَ اللَّهُ أَحَدٌ",
+        count: 3
+      },
+      {
+        text: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ",
+        count: 100
+      }
+    ]
+  },
+
+  sleep: {
+    title: "🌙 أذكار النوم",
+    items: [
+      {
+        text: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا",
+        count: 1
+      },
+      {
+        text: "سُبْحَانَ اللَّهِ",
+        count: 33
+      },
+      {
+        text: "الْحَمْدُ لِلَّهِ",
+        count: 33
+      },
+      {
+        text: "اللَّهُ أَكْبَرُ",
+        count: 34
+      }
+    ]
+  },
+
+  prayer: {
+    title: "🕌 أذكار بعد الصلاة",
+    items: [
+      {
+        text: "أَسْتَغْفِرُ اللَّهَ",
+        count: 3
+      },
+      {
+        text: "اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ، تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ",
+        count: 1
+      },
+      {
+        text: "سُبْحَانَ اللَّهِ",
+        count: 33
+      },
+      {
+        text: "الْحَمْدُ لِلَّهِ",
+        count: 33
+      },
+      {
+        text: "اللَّهُ أَكْبَرُ",
+        count: 34
+      }
+    ]
+  },
+
+  wake: {
+    title: "☀️ أذكار الاستيقاظ",
+    items: [
+      {
+        text: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ",
+        count: 1
+      }
+    ]
+  },
+
+  misc: {
+    title: "🤲 أذكار متنوعة",
+    items: [
+      {
+        text: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ",
+        count: 100
+      },
+      {
+        text: "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ",
+        count: 1
+      }
+    ]
+  }
+
+};
+
+
+let currentCategory = "";
+let currentIndex = 0;
+let completed = 0;
+
+function hideAll() {
+  document.querySelectorAll(".section").forEach(s => {
+    s.classList.remove("active");
+  });
+}
+
+function openCategory(category) {
+
+  currentCategory = category;
+  currentIndex = 0;
+  completed = 0;
+
+  hideAll();
+
+  document.getElementById("dhikrPage").classList.add("active");
+
+  document.getElementById("sectionTitle").textContent =
+    adhkar[category].title;
+
+  renderDhikr();
+}
+
+
+function renderDhikr() {
+
+  const container = document.getElementById("dhikrContainer");
+
+  const item = adhkar[currentCategory].items[currentIndex];
+
+  const total = adhkar[currentCategory].items.length;
+
+  const percent = (currentIndex / total) * 100;
+
+  document.getElementById("progressBar").style.width =
+    percent + "%";
+
+  const key =
+    currentCategory + "_" + currentIndex;
+
+  const favorites =
+    JSON.parse(localStorage.getItem("favorites") || "[]");
+
+  const isFavorite =
+    favorites.includes(key);
+
+  container.innerHTML = `
+
+    <div class="dhikr">
+
+      <button class="favorite"
+        onclick="toggleFavorite('${key}')">
+        ${isFavorite ? "❤️" : "♡"}
+      </button>
+
+      <div class="dhikr-text">
+        ${item.text}
+      </div>
+
+      <div class="count">
+        عدد التكرار: ${item.count}
+      </div>
+
+      <button class="done" onclick="nextDhikr()">
+        ✓ تم
+      </button>
+
+      <p>
+        الذكر ${currentIndex + 1} من ${total}
+      </p>
+
+    </div>
+  `;
+}
+
+
+function nextDhikr() {
+
+  currentIndex++;
+
+  if (
+    currentIndex >=
+    adhkar[currentCategory].items.length
+  ) {
+
+    document.getElementById("progressBar").style.width = "100%";
+
+    alert("ما شاء الله 🌷 أتممت الأذكار، تقبل الله منك.");
+
+    goHome();
+
+    return;
+  }
+
+  renderDhikr();
+}
+
+
+function toggleFavorite(key) {
+
+  let favorites =
+    JSON.parse(localStorage.getItem("favorites") || "[]");
+
+  if (favorites.includes(key)) {
+
+    favorites =
+      favorites.filter(item => item !== key);
+
+  } else {
+
+    favorites.push(key);
+
+  }
+
+  localStorage.setItem(
+    "favorites",
+    JSON.stringify(favorites)
+  );
+
+  renderDhikr();
+}
+
+
+function showFavorites() {
+
+  hideAll();
+
+  document.getElementById("favorites")
+    .classList.add("active");
+
+  const container =
+    document.getElementById("favoriteContainer");
+
+  const favorites =
+    JSON.parse(localStorage.getItem("favorites") || "[]");
+
+  if (favorites.length === 0) {
+
+    container.innerHTML = `
+      <div class="quote">
+        لا توجد أذكار مفضلة بعد ❤️
+      </div>
+    `;
+
+    return;
+  }
+
+  container.innerHTML = "";
+
+  favorites.forEach(key => {
+
+    const parts = key.split("_");
+
+    const category = parts[0];
+
+    const index = parseInt(parts[1]);
+
+    const item = adhkar[category].items[index];
+
+    container.innerHTML += `
+
+      <div class="dhikr">
+
+        <div class="dhikr-text">
+          ${item.text}
+        </div>
+
+        <div class="count">
+          عدد التكرار: ${item.count}
+        </div>
+
+      </div>
+    `;
+
+  });
+
+}
+
+
+function showSettings() {
+
+  hideAll();
+
+  document.getElementById("settings")
+    .classList.add("active");
+
+}
+
+
+function goHome() {
+
+  hideAll();
+
+  document.getElementById("home")
+    .classList.add("active");
+
+}
+
+
+function toggleDarkMode() {
+
+  document.body.classList.toggle("dark");
+
+  const isDark =
+    document.body.classList.contains("dark");
+
+  localStorage.setItem(
+    "darkMode",
+    isDark ? "1" : "0"
+  );
+
+}
+
+
+if (
+  localStorage.getItem("darkMode") === "1"
+) {
+
+  document.body.classList.add("dark");
+
+}
+
+</script>
+
+</body>
+        </html>
