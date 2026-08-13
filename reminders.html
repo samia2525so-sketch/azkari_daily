@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>التذكيرات 🌷</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Tahoma, sans-serif;
+  background: #f4f8f7;
+  color: #173b3a;
+}
+
+header {
+  background: linear-gradient(135deg, #07766e, #155e75);
+  color: white;
+  text-align: center;
+  padding: 30px 15px;
+  border-radius: 0 0 30px 30px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 30px;
+}
+
+.container {
+  max-width: 650px;
+  margin: 25px auto;
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.card h2 {
+  margin-top: 0;
+  color: #07766e;
+}
+
+label {
+  display: block;
+  margin: 12px 0 6px;
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  font-size: 16px;
+}
+
+button {
+  border: none;
+  border-radius: 14px;
+  padding: 13px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.save {
+  background: #07766e;
+  color: white;
+  width: 100%;
+}
+
+.back {
+  background: #e0eeee;
+  color: #173b3a;
+  width: 100%;
+}
+
+#message {
+  text-align: center;
+  margin-top: 15px;
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🔔 تذكيراتي</h1>
+  <p>اضبطي وقت التذكير بأذكارك اليومية 🌷</p>
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <h2>🌅 تذكير أذكار الصباح</h2>
+
+    <label>اختاري وقت التذكير:</label>
+    <input type="time" id="morningTime">
+
+    <button class="save" onclick="saveMorning()">
+      💾 حفظ التذكير
+    </button>
+  </div>
+
+  <div class="card">
+    <h2>🌙 تذكير أذكار المساء</h2>
+
+    <label>اختاري وقت التذكير:</label>
+    <input type="time" id="eveningTime">
+
+    <button class="save" onclick="saveEvening()">
+      💾 حفظ التذكير
+    </button>
+  </div>
+
+  <div id="message"></div>
+
+  <button class="back" onclick="history.back()">
+    ↩️ العودة
+  </button>
+
+</div>
+
+<script>
+function saveMorning() {
+  const time = document.getElementById("morningTime").value;
+
+  if (!time) {
+    alert("من فضلك اختاري وقت التذكير 🌷");
+    return;
+  }
+
+  localStorage.setItem("morningReminder", time);
+
+  document.getElementById("message").innerText =
+    "✅ تم حفظ تذكير أذكار الصباح";
+}
+
+function saveEvening() {
+  const time = document.getElementById("eveningTime").value;
+
+  if (!time) {
+    alert("من فضلك اختاري وقت التذكير 🌷");
+    return;
+  }
+
+  localStorage.setItem("eveningReminder", time);
+
+  document.getElementById("message").innerText =
+    "✅ تم حفظ تذكير أذكار المساء";
+}
+
+window.onload = function() {
+  document.getElementById("morningTime").value =
+    localStorage.getItem("morningReminder") || "";
+
+  document.getElementById("eveningTime").value =
+    localStorage.getItem("eveningReminder") || "";
+};
+</script>
+
+</body>
+</html>
