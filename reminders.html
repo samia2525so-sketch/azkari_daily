@@ -167,6 +167,33 @@ window.onload = function() {
   document.getElementById("eveningTime").value =
     localStorage.getItem("eveningReminder") || "";
 };
+  // طلب إذن الإشعارات
+if ("Notification" in window && Notification.permission === "default") {
+  Notification.requestPermission();
+}
+
+// فحص أوقات التذكيرات
+setInterval(function() {
+  const now = new Date();
+  const currentTime =
+    String(now.getHours()).padStart(2, "0") + ":" +
+    String(now.getMinutes()).padStart(2, "0");
+
+  const morningTime = localStorage.getItem("morningReminder");
+  const eveningTime = localStorage.getItem("eveningReminder");
+
+  if (currentTime === morningTime) {
+    new Notification("🌅 أذكار الصباح", {
+      body: "حان الآن وقت أذكار الصباح 🌷"
+    });
+  }
+
+  if (currentTime === eveningTime) {
+    new Notification("🌙 أذكار المساء", {
+      body: "حان الآن وقت أذكار المساء 🌷"
+    });
+  }
+}, 60000);
 </script>
 
 </body>
