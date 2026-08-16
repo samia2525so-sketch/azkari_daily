@@ -1,0 +1,10 @@
+{
+  "name": "أذكاري ديلي",
+  "short_name": "أذكاري",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f4f8f7",
+  "theme_color": "#70b66e",
+  "description": "تطبيق أذكاري اليومية",
+  "icons": []
+}
