@@ -173,8 +173,9 @@ if ("Notification" in window && Notification.permission === "default") {
 }
 
 // فحص أوقات التذكيرات
-setInterval(function() {
+setInterval(async function () {
   const now = new Date();
+
   const currentTime =
     String(now.getHours()).padStart(2, "0") + ":" +
     String(now.getMinutes()).padStart(2, "0");
@@ -182,18 +183,28 @@ setInterval(function() {
   const morningTime = localStorage.getItem("morningReminder");
   const eveningTime = localStorage.getItem("eveningReminder");
 
-  if (currentTime === morningTime) {
-    new Notification("🌅 أذكار الصباح", {
-      body: "حان الآن وقت أذكار الصباح 🌷"
-    });
-  }
+  if (currentTime === morningTime || currentTime === eveningTime) {
+    if (Notification.permission === "granted") {
+      const registration = await navigator.serviceWorker.ready;
 
-  if (currentTime === eveningTime) {
-    new Notification("🌙 أذكار المساء", {
-      body: "حان الآن وقت أذكار المساء 🌷"
-    });
+      const title =
+        currentTime === morningTime
+          ? "🌅 أذكار الصباح"
+          : "🌙 أذكار المساء";
+
+      const body =
+        currentTime === morningTime
+          ? "حان الآن وقت أذكار الصباح 🌷"
+          : "حان الآن وقت أذكار المساء 🌷";
+
+      registration.showNotification(title, {
+        body: body
+      });
+    }
   }
 }, 60000);
+
+  
   if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("./service-worker.js");
 }
