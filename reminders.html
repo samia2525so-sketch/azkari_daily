@@ -163,7 +163,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
-  async function enableNotifications() {
+async function enableNotifications() {
   try {
     const permission = await Notification.requestPermission();
 
@@ -172,8 +172,11 @@ const messaging = firebase.messaging();
       return;
     }
 
+    const registration = await navigator.serviceWorker.register("./service-worker.js");
+
     const token = await messaging.getToken({
-      vapidKey: "BOcfeECWXk1qya6ThX5QqqqzrPlR9r37Lko6ILX7Y5T0vNYomyIi8L0upXy2Mf4EXepKChRKt7wQQ_MoiZ2NdZo"
+      vapidKey: "BOcfeECWXk1qya6ThX5QqqqzrPlR9r37Lko6ILX7Y5T0vNYomyIi8L0upXy2Mf4EXepKChRKt7wQQ_MoiZ2NdZo",
+      serviceWorkerRegistration: registration
     });
 
     console.log("FCM Token:", token);
@@ -182,9 +185,10 @@ const messaging = firebase.messaging();
       localStorage.setItem("fcmToken", token);
       alert("✅ تم تفعيل إشعارات أذكاري ديلي");
     }
+
   } catch (error) {
     console.error(error);
-    alert("حدث خطأ في تفعيل الإشعارات 🌷");
+    alert("حدث خطأ: " + error.message);
   }
 }
 
