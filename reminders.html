@@ -163,6 +163,32 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
+  async function enableNotifications() {
+  try {
+    const permission = await Notification.requestPermission();
+
+    if (permission !== "granted") {
+      alert("يجب السماح بالإشعارات 🌷");
+      return;
+    }
+
+    const token = await messaging.getToken({
+      vapidKey: "BOcfeECWXk1qya6ThX5QqqqzrPlR9r37Lko6ILX7Y5T0vNYomyIi8L0upXy2Mf4EXepKChRKt7wQQ_MoiZ2NdZo"
+    });
+
+    console.log("FCM Token:", token);
+
+    if (token) {
+      localStorage.setItem("fcmToken", token);
+      alert("✅ تم تفعيل إشعارات أذكاري ديلي");
+    }
+  } catch (error) {
+    console.error(error);
+    alert("حدث خطأ في تفعيل الإشعارات 🌷");
+  }
+}
+
+enableNotifications();
 </script>
 <script>
 function saveMorning() {
