@@ -148,7 +148,22 @@ button:active {
   </button>
 
 </div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js"></script>
 
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyACAoqgmWj9K7JJatWAve7vThn5oS1R8gI",
+  authDomain: "azkari-dayli-f9e88.firebaseapp.com",
+  projectId: "azkari-dayli-f9e88",
+  storageBucket: "azkari-dayli-f9e88.firebasestorage.app",
+  messagingSenderId: "921800651251",
+  appId: "1:921800651251:web:d78d043407c75b9cc2a286"
+};
+
+firebase.initializeApp(firebaseConfig);
+const messaging = firebase.messaging();
+</script>
 <script>
 function saveMorning() {
   const time = document.getElementById("morningTime").value;
